@@ -10,6 +10,8 @@ namespace CommonLib.Net.Http
 {
     public class WebPage
     {
+        public XNamespace Namespace { get; private set; }
+
         public XDocument Content { get; private set; }
 
         public Uri Uri { get; }
@@ -27,6 +29,8 @@ namespace CommonLib.Net.Http
             using var sgml = new SgmlReader { DocType = "HTML", CaseFolding = CaseFolding.ToLower, InputStream = stream };
 
             Content = XDocument.Load(sgml);
+
+            Namespace = Content.Root.Name.Namespace;
         }
     }
 }
