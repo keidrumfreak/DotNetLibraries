@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using CommonLib.Net.Http;
 using Sgml;
 
-namespace CommonLib.Net.Http
+namespace CommonLib.TestHelper.Net.Http
 {
-    public class WebPage
+    public class MockHtmlDocument : IHtmlDocument
     {
         public XNamespace Namespace { get; private set; }
 
@@ -16,21 +15,21 @@ namespace CommonLib.Net.Http
 
         public Uri Uri { get; }
 
-        public WebPage(string uri)
+        string content;
+
+        public MockHtmlDocument(string content)
         {
-            Uri = new Uri(uri);
+            this.content = content;
         }
 
-        public virtual async Task LoadAsync()
+        public Task LoadAsync()
         {
-            var content = await HttpClientProvider.GetClient().GetStringAsync(Uri);
-
             using var stream = new StringReader(content);
             using var sgml = new SgmlReader { DocType = "HTML", CaseFolding = CaseFolding.ToLower, InputStream = stream };
-
-            Content = XDocument.Load(sgml);
+            Content = XDocument.Load(stream);
 
             Namespace = Content.Root.Name.Namespace;
+            return Task.CompletedTask;
         }
     }
 }
