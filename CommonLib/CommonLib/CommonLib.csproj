@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Xml.SgmlReader" Version="1.8.20" />
+    <PackageReference Include="System.IO.Abstractions" Version="13.2.23" />
   </ItemGroup>
 
 </Project>
