@@ -70,5 +70,11 @@ namespace CommonLib.TestHelper.UnitTesting
         {
             Assert.IsTrue(condition);
         }
+
+        /// <inheritdoc cref="Assert.IsFalse(bool)"/>
+        public static void IsFalse(this bool condition)
+        {
+            Assert.IsFalse(condition);
+        }
     }
 }
