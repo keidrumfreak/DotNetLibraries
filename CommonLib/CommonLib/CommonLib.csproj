@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Xml.SgmlReader" Version="1.8.20" />
-    <PackageReference Include="System.IO.Abstractions" Version="13.2.23" />
+    <PackageReference Include="Microsoft.Xml.SgmlReader" Version="1.8.24" />
+    <PackageReference Include="System.IO.Abstractions" Version="13.2.43" />
   </ItemGroup>
 
 </Project>
