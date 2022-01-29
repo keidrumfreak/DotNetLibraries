@@ -27,4 +27,14 @@ namespace CommonLib
             return Enum.GetValues(typeof(T)).Cast<T>();
         }
     }
+
+    public sealed class StringValueAttribute : Attribute
+    {
+        public string StringValue { get; }
+
+        public StringValueAttribute(string value)
+        {
+            StringValue = value;
+        }
+    }
 }

@@ -6,4 +6,8 @@
     <RootNamespace>CommonLib</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj" />
+  </ItemGroup>
+
 </Project>
