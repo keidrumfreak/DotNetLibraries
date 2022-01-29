@@ -8,13 +8,13 @@ namespace CommonLib.Wpf
 {
     public abstract class ViewModelBase : BindableBase
     {
-        private class DelegateCommand : ICommand
+        private class DelegateCommand<T> : ICommand
         {
-            Action<object> command;
-            Func<object, bool> canExecute;
+            Action<T> command;
+            Func<T, bool> canExecute;
             string propName;
 
-            public DelegateCommand(ViewModelBase viewModel, Action<object> command, Func<object, bool> canExecute = null, string propName = null)
+            public DelegateCommand(ViewModelBase viewModel, Action<T> command, Func<T, bool> canExecute = null, string propName = null)
             {
                 this.command = command;
                 this.canExecute = canExecute;
@@ -28,12 +28,12 @@ namespace CommonLib.Wpf
 
             public bool CanExecute(object parameter)
             {
-                return canExecute?.Invoke(parameter) ?? true;
+                return canExecute?.Invoke((T)parameter) ?? true;
             }
 
             public void Execute(object parameter)
             {
-                command?.Invoke(parameter);
+                command?.Invoke((T)parameter);
             }
 
             public event EventHandler CanExecuteChanged
@@ -51,14 +51,14 @@ namespace CommonLib.Wpf
             }
         }
 
-        private class DelegateAsyncCommand : ICommand
+        private class DelegateAsyncCommand<T> : ICommand
         {
-            Func<object, Task> command;
-            Func<object, bool> canExecute;
+            Func<T, Task> command;
+            Func<T, bool> canExecute;
             string propName;
             bool isProcessing = false;
 
-            public DelegateAsyncCommand(ViewModelBase viewModel, Func<object, Task> command, Func<object, bool> canExecute = null, string propName = null)
+            public DelegateAsyncCommand(ViewModelBase viewModel, Func<T, Task> command, Func<T, bool> canExecute = null, string propName = null)
             {
                 this.command = command;
                 this.canExecute = canExecute;
@@ -72,14 +72,14 @@ namespace CommonLib.Wpf
 
             public bool CanExecute(object parameter)
             {
-                return !isProcessing && (canExecute?.Invoke(parameter) ?? true);
+                return !isProcessing && (canExecute?.Invoke((T)parameter) ?? true);
             }
 
             public async void Execute(object parameter)
             {
                 isProcessing = true;
                 Application.Current.Dispatcher.Invoke(() => CommandManager.InvalidateRequerySuggested());
-                await command?.Invoke(parameter);
+                await command?.Invoke((T)parameter);
                 isProcessing = false;
                 Application.Current.Dispatcher.Invoke(() => CommandManager.InvalidateRequerySuggested());
             }
@@ -111,9 +111,9 @@ namespace CommonLib.Wpf
         /// <param name="canExecute"></param>
         /// <param name="propName">CanExecuteの変更にバインドされるプロパティ名。省略された場合全てのPropetyChangedと連動する</param>
         /// <returns></returns>
-        protected ICommand CreateCommand(Action<object> command, Func<object, bool> canExecute = null, string propName = null)
+        protected ICommand CreateCommand<T>(Action<T> command, Func<T, bool> canExecute = null, string propName = null)
         {
-            return new DelegateCommand(this, command, canExecute, propName);
+            return new DelegateCommand<T>(this, command, canExecute, propName);
         }
 
         /// <summary>
@@ -123,9 +123,9 @@ namespace CommonLib.Wpf
         /// <param name="canExecute"></param>
         /// <param name="propName">CanExecuteの変更にバインドされるプロパティ名。省略された場合全てのPropetyChangedと連動する</param>
         /// <returns></returns>
-        protected ICommand CreateCommand(Action command, Func<object, bool> canExecute = null, string propName = null)
+        protected ICommand CreateCommand(Action command, Func<bool> canExecute = null, string propName = null)
         {
-            return CreateCommand(input => command(), canExecute, propName);
+            return CreateCommand<object>(input => command(), canExecute == null ? null : input => canExecute(), propName);
         }
 
         /// <summary>
@@ -135,9 +135,9 @@ namespace CommonLib.Wpf
         /// <param name="canExecute"></param>
         /// <param name="propName">CanExecuteの変更にバインドされるプロパティ名。省略された場合全てのPropetyChangedと連動する</param>
         /// <returns></returns>
-        protected ICommand CreateCommand(Func<object, Task> command, Func<object, bool> canExecute = null, string propName = null)
+        protected ICommand CreateCommand<T>(Func<T, Task> command, Func<T, bool> canExecute = null, string propName = null)
         {
-            return new DelegateAsyncCommand(this, command, canExecute, propName);
+            return new DelegateAsyncCommand<T>(this, command, canExecute, propName);
         }
 
         /// <summary>
@@ -147,9 +147,9 @@ namespace CommonLib.Wpf
         /// <param name="canExecute"></param>
         /// <param name="propName">CanExecuteの変更にバインドされるプロパティ名。省略された場合全てのPropetyChangedと連動する</param>
         /// <returns></returns>
-        protected ICommand CreateCommand(Func<Task> command, Func<object, bool> canExecute = null, string propName = null)
+        protected ICommand CreateCommand(Func<Task> command, Func<bool> canExecute = null, string propName = null)
         {
-            return CreateCommand(input => command(), canExecute, propName);
+            return CreateCommand<object>(input => command(), canExecute == null ? null : input => canExecute(), propName);
         }
     }
 }
