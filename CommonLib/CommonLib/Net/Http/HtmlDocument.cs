@@ -21,7 +21,7 @@ namespace CommonLib.Net.Http
 
         public virtual async Task LoadAsync()
         {
-            var content = await HttpClientProvider.GetClient().GetStringAsync(Uri);
+            var content = await HttpClientProvider.GetClient().GetStringAsync(Uri).ConfigureAwait(false);
 
             using var stream = new StringReader(content);
             using var sgml = new SgmlReader { DocType = "HTML", CaseFolding = CaseFolding.ToLower, InputStream = stream };
