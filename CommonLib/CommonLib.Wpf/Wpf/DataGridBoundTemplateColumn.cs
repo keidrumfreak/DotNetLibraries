@@ -17,7 +17,7 @@ namespace CommonLib.Wpf
             return Generate(dataItem, CellEditingTemplate);
         }
 
-        private FrameworkElement Generate(object dataItem, DataTemplate template)
+        private ContentControl Generate(object dataItem, DataTemplate template)
         {
             var contentControl = new ContentControl { ContentTemplate = template, Content = dataItem };
             BindingOperations.SetBinding(contentControl, ContentControl.ContentProperty, Binding);

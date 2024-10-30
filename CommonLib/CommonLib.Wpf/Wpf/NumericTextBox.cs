@@ -7,7 +7,7 @@ namespace CommonLib.Wpf
     /// <summary>
     /// 数値入力のみを受け付けるテキストボックス
     /// </summary>
-    public class NumericTextBox : TextBox
+    public partial class NumericTextBox : TextBox
     {
 
         public NumericTextBox()
@@ -17,7 +17,10 @@ namespace CommonLib.Wpf
 
         private void NumericTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !new Regex("[0-9]").IsMatch(e.Text);
+            e.Handled = !NumRegex().IsMatch(e.Text);
         }
+
+        [GeneratedRegex("[0-9]")]
+        private static partial Regex NumRegex();
     }
 }

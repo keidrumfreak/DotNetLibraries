@@ -43,7 +43,7 @@ namespace CommonLib.Wpf
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null ? value.Equals(TrueValue) : false;
+            return value != null && value.Equals(TrueValue);
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
@@ -69,7 +69,7 @@ namespace CommonLib.Wpf
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return ((bool)value) ? TrueValue :
-                EqualityComparer<T>.Default.Equals(FalseValue, default(T)) ? Binding.DoNothing : FalseValue;
+                EqualityComparer<T>.Default.Equals(FalseValue, default) ? Binding.DoNothing : FalseValue;
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)

@@ -10,9 +10,9 @@ namespace CommonLib.Wpf
     {
         private class DelegateCommand<T> : ICommand
         {
-            Action<T> command;
-            Func<T, bool> canExecute;
-            string propName;
+            readonly Action<T> command;
+            readonly Func<T, bool> canExecute;
+            readonly string propName;
 
             public DelegateCommand(ViewModelBase viewModel, Action<T> command, Func<T, bool> canExecute = null, string propName = null)
             {
@@ -53,9 +53,9 @@ namespace CommonLib.Wpf
 
         private class DelegateAsyncCommand<T> : ICommand
         {
-            Func<T, Task> command;
-            Func<T, bool> canExecute;
-            string propName;
+            readonly Func<T, Task> command;
+            readonly Func<T, bool> canExecute;
+            readonly string propName;
             bool isProcessing = false;
 
             public DelegateAsyncCommand(ViewModelBase viewModel, Func<T, Task> command, Func<T, bool> canExecute = null, string propName = null)
