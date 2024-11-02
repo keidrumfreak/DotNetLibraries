@@ -8,20 +8,13 @@ using Sgml;
 
 namespace CommonLib.TestHelper.Net.Http
 {
-    public class MockHtmlDocument : IHtmlDocument
+    public class MockHtmlDocument(string content) : IHtmlDocument
     {
         public XNamespace Namespace { get; private set; }
 
         public XDocument Content { get; private set; }
 
         public Uri Uri { get; }
-
-        string content;
-
-        public MockHtmlDocument(string content)
-        {
-            this.content = content;
-        }
 
         public Task LoadAsync(HttpClient client)
         {
