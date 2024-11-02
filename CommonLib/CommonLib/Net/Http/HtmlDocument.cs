@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Sgml;
@@ -19,9 +20,9 @@ namespace CommonLib.Net.Http
             Uri = new Uri(uri);
         }
 
-        public virtual async Task LoadAsync()
+        public virtual async Task LoadAsync(HttpClient client)
         {
-            var content = await HttpClientProvider.GetClient().GetStringAsync(Uri).ConfigureAwait(false);
+            var content = await client.GetStringAsync(Uri).ConfigureAwait(false);
 
             using var stream = new StringReader(content);
             using var sgml = new SgmlReader { DocType = "HTML", CaseFolding = CaseFolding.ToLower, InputStream = stream };

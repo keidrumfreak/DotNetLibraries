@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -15,6 +16,6 @@ namespace CommonLib.Net.Http
 
         Uri Uri { get; }
 
-        Task LoadAsync();
+        Task LoadAsync(HttpClient client);
     }
 }
