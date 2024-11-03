@@ -9,17 +9,8 @@ using CommonLib.IO;
 
 namespace CommonLib.Logging
 {
-    public class TextLogger : ILogger
+    public class TextLogger(IFileSystem fileSystem, string folder) : ILogger
     {
-        IFileSystem fileSystem;
-        string folder;
-
-        public TextLogger(IFileSystem fileSystem, string folder)
-        {
-            this.fileSystem = fileSystem;
-            this.folder = folder;
-        }
-
         public TextLogger(string folder) : this(new FileSystem(), folder)
         { }
 
